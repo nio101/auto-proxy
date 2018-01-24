@@ -1,0 +1,11 @@
+# -= autoproxy config, DO NOT EDIT MANUALLY =- tee /etc/bash.bashrc
+http_proxy="http://localhost:3128" tee /etc/bash.bashrc
+# -= autoproxy config =- tee /etc/bash.bashrc
+# -= autoproxy config, DO NOT EDIT MANUALLY =- tee /etc/bash.bashrc
+http_proxy="http://localhost:3128" tee /etc/bash.bashrc
+# -= autoproxy config =- tee /etc/bash.bashrc
+# -= autoproxy config, DO NOT EDIT MANUALLY =- tee /etc/bash.bashrc
+http_proxy="http://localhost:3128" tee /etc/bash.bashrc
+# -= autoproxy config =- tee /etc/bash.bashrc
+# -= autoproxy config, DO NOT EDIT MANUALLY =- tee /etc/bash.bashrc
+# -= autoproxy config, DO NOT EDIT MANUALLY =- tee -a /etc/bash.bashrc
