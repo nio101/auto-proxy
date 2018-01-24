@@ -7,5 +7,5 @@ sed '/# -= autoproxy firefox config, DO NOT EDIT MANUALLY =-/,/# -= autoproxy fi
 
 # create it again, with proper values
 sudo bash -c 'echo "# -= autoproxy firefox config, DO NOT EDIT MANUALLY =-" >> /etc/bash.bashrc'
-sudo bash -c 'echo "alias ff=\"firefox --profile /home/nio/.mozilla/firefox/1k1aqvtd.default\"">> /etc/bash.bashrc'
+sudo bash -c 'echo "alias ff=\"firefox -P internet --new-instance\"">> /etc/bash.bashrc'
 sudo bash -c 'echo "# -= autoproxy firefox config =-" >> /etc/bash.bashrc'
