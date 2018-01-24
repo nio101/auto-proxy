@@ -87,7 +87,7 @@ FLAG_FILE="/tmp/autoproxy_proxy_set.flag"
 GOOGLE_HOST="www.google.com"
 GITHUB_HOST="www.github.com"
 
-echo "internet 🚀| color=#1a9850 iconName=emblem-web $MENUFONT"
+echo "internet 🚀| color=#1a9850 iconName=network-transmit-receive $MENUFONT"
 #echo "intranet ⛔| color=#fc8d59 iconName=emblem-web $MENUFONT"
 echo "---"
 
