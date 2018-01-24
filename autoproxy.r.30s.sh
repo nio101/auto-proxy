@@ -74,13 +74,12 @@
 # Proxy Settings that will be used in the .autoproxy_set_proxy scripts
 # to make changes to system's conf
 
-# TODO: séparer le host de ping intranet
-# du proxy (cntlm local!)
-
 # this one will be used with ping to detect intranet connectivity
-AP_MAIN_PROXY_HOST="proxyhost"
+AP_INTRANET_HOST="intranet_host"
+AP_MAIN_PROXY_HOST="proxy_host"
 AP_MAIN_PROXY_PORT="8080"
 AP_MAIN_PROXY="http://$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
+# or AP_MAIN_PROXY="http://username:password@$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
 
 # those will be used in the set_proxy scripts
 AP_ALL_PROXY=$AP_MAIN_PROXY
@@ -90,18 +89,6 @@ AP_FTP_PROXY=$AP_MAIN_PROXY
 AP_RSYNC_PROXY=$AP_MAIN_PROXY
 AP_NO_PROXY="localhost,127.0.0.0/8,::1, .localdomain.intra"
 
-# ----------- private part
-AP_MAIN_PROXY_HOST="proxyrsc2-vdr.si.francetelecom.fr"
-AP_MAIN_PROXY_PORT="3128"
-AP_MAIN_PROXY="http://$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
-
-# those will be used in the set_proxy scripts
-AP_ALL_PROXY=$AP_MAIN_PROXY
-AP_HTTP_PROXY=$AP_MAIN_PROXY
-AP_HTTPS_PROXY=$AP_MAIN_PROXY
-AP_FTP_PROXY=$AP_MAIN_PROXY
-AP_RSYNC_PROXY=$AP_MAIN_PROXY
-AP_NO_PROXY="localhost,127.0.0.0/8,::1,rd.francetelecom.fr,.ftgroup,.orange-labs.fr"
 # ================================================================
 export AP_ALL_PROXY
 export AP_HTTP_PROXY
@@ -186,7 +173,7 @@ function show_ping_result {
 	fi
 }
 
-PROXY_PING=$(ping_server ${AP_MAIN_PROXY_HOST})
+PROXY_PING=$(ping_server ${AP_INTRANET_HOST})
 GOOGLE_PING=$(ping_server ${GOOGLE_HOST})
 GITHUB_PING=$(ping_server ${GITHUB_HOST})
 
@@ -210,6 +197,9 @@ function set_proxy {
 			fi
 		fi
 	done
+	notify-send -u normal -t 2000 -a autoproxy -i network-transmit-receive "Intranet detected, proxy configured!"
+	touch /tmp/autoproxy_auto_on.flag
+	rm /tmp/autoproxy_auto_off.flag
 	exit 0
 }
 
@@ -227,6 +217,9 @@ function unset_proxy {
 			fi
 		fi
 	done
+	notify-send -u normal -t 2000 -a autoproxy -i network-transmit-receive "Internet detected, proxy disabled!"
+	touch /tmp/autoproxy_auto_off.flag
+	rm /tmp/autoproxy_auto_on.flag
 	exit 0
 }
 
@@ -292,13 +285,18 @@ else
 	ICON="⛔"
 	COLOR="#fc8d59"
 	DO_TIME_HTTP="no"
+	if [ "$ZONE" == "internet" ]; then
+		# no intranet ping && no internet http access
+		# => no man's land!
+		ZONE="???"
+	fi
 fi
 
 echo "$ZONE $ICON| color=$COLOR iconName=network-transmit-receive $MENUFONT"
 echo "---"
 
-echo "proxy: $STATUS"
 systemctl is-active cntlm >/dev/null 2>&1 && echo "cntlm: ON" || echo "cntlm: OFF"
+echo "proxy: $STATUS"
 echo "debug http_proxy: $http_proxy"
 echo "---"
 
@@ -317,8 +315,6 @@ else
 	echo "http google.com: ❌| color=#fc8d59 $FONT"
 	echo "http github.com: ❌| color=#fc8d59 $FONT"
 fi
-
-~/.config/argos/.test.sh
 
 echo "---"
 echo "Refresh... | refresh=true"
