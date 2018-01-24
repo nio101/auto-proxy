@@ -1,1 +1,0 @@
-show_ping_result: 31 test
