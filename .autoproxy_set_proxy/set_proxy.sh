@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # find and replace values for proxy in ~/.bashrc
 
 PROXY_STRING=$1
 SOCKS_STRING=$2
 
-echo "$PROXY_STRING"
-echo "$SOCKS_STRING"
+echo "$HTTP_PROXY"
 
 # todo:
 # faire un grep avec beginning of line detection
@@ -21,25 +20,13 @@ echo "$SOCKS_STRING"
 # faire ca en utilisant:
 # sed '/PATTERN-1/,/PATTERN-2/d' input.txt
 
-awk '/http_proxy/{gsub(/\"\"/, "\"'$PROXY_STRING'\"")};{print}' ~/.bashrc \
-| awk '/https_proxy/{gsub(/\"\"/, "\"'$PROXY_STRING'\"")};{print}' \
-| awk '/ftp_proxy/{gsub(/\"\"/, "\"'$PROXY_STRING'\"")};{print}' \
-| awk '/all_proxy/{gsub(/\"\"/, "\"'$SOCKS_STRING'\"")};{print}' > ~/.bashrc.new
+#awk '/http_proxy/{gsub(/\"\"/, "\"'$PROXY_STRING'\"")};{print}' ~/.bashrc \
+#| awk '/https_proxy/{gsub(/\"\"/, "\"'$PROXY_STRING'\"")};{print}' \
+#| awk '/ftp_proxy/{gsub(/\"\"/, "\"'$PROXY_STRING'\"")};{print}' \
+#| awk '/all_proxy/{gsub(/\"\"/, "\"'$SOCKS_STRING'\"")};{print}' > ~/.bashrc.new
 
 # export all_proxy="socks://niceway.rd.francetelecom.fr:1080/"
 
 # awk '/http_proxy/{gsub(/\"\"/, "\"http://localhost:3128\"")};{print}' .bashrc > .bashrc_test
 
-cat ~/.bashrc.new
-
-# Proxy Settings
-export ALL_PROXY=http://proxy.mydomain.com:8080
-export HTTP_PROXY=$ALL_PROXY
-export HTTPS_PROXY=$ALL_PROXY
-export FTP_PROXY=$ALL_PROXY
-export RSYNC_PROXY=$ALL_PROXY
-export http_proxy=$ALL_PROXY
-export https_proxy=$ALL_PROXY
-export ftp_proxy=$ALL_PROXY
-export rsync_proxy=$ALL_PROXY
-export NO_PROXY=.mydomain.com,.local,10.0.2.
+# cat ~/.bashrc.new

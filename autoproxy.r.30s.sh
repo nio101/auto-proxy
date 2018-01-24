@@ -84,10 +84,6 @@ MAX_PING=1000
 
 FLAG_FILE="/tmp/autoproxy_proxy_set.flag"
 
-INTRANET_HTTP_PROXY_HOST="proxyrsc2-vdr.si.francetelecom.fr"
-INTRANET_HTTP_PORT="8080"
-INTRANET_HTTP_PROXY="http://$INTRANET_HTTP_PROXY_HOST:$INTRANET_HTTP_PORT"
-
 GOOGLE_HOST="www.google.com"
 GITHUB_HOST="www.github.com"
 
@@ -95,31 +91,34 @@ echo "internet 🚀| color=#1a9850 iconName=emblem-web $MENUFONT"
 #echo "intranet ⛔| color=#fc8d59 iconName=emblem-web $MENUFONT"
 echo "---"
 
+# read the proxy config
+source ~/.config/argos/.autoproxy_config.cfg
+
 function ping_server {	# and return the ping value in ms
 	arg1=$1
 	# ping the main proxy
-	if RES=$(ping -c 2 -n -q "$arg1" 2>/dev/null); then
+	if RES=$(timeout 1 ping -c 1 -n -q $arg1 2>/dev/null); then
 	    PING_TIME=$(echo "$RES" | awk -F '/' 'END {printf "%.0f\n", $5}')
 	else
-	    PING_TIME="$MAX_PING"
+	    PING_TIME=$MAX_PING
 	fi
 	echo "$PING_TIME"
 }
 
 function colorize {
-  if [ "$1" -ge $MAX_PING ]; then
-    echo "${COLORS[0]}"
-  elif [ "$1" -ge 600 ]; then
-    echo "${COLORS[1]}"
-  elif [ "$1" -ge 300 ]; then
-    echo "${COLORS[2]}"
-  elif [ "$1" -ge 100 ]; then
-    echo "${COLORS[3]}"
-  elif [ "$1" -ge 50 ]; then
-    echo "${COLORS[4]}"
-  else
-    echo "${COLORS[5]}"
-  fi
+  	if [ $1 -ge $MAX_PING ]; then
+    	echo "${COLORS[0]}"
+  	elif [ $1 -ge 600 ]; then
+    	echo "${COLORS[1]}"
+  	elif [ $1 -ge 300 ]; then
+    	echo "${COLORS[2]}"
+  	elif [ $1 -ge 100 ]; then
+    	echo "${COLORS[3]}"
+  	elif [ $1 -ge 50 ]; then
+    	echo "${COLORS[4]}"
+  	else
+    	echo "${COLORS[5]}"
+  	fi
 }
 
 function show_ping_result {
@@ -132,13 +131,13 @@ function show_ping_result {
 	fi
 }
 
-PROXY_PING=$(ping_server ${INTRANET_HTTP_PROXY_HOST})
+PROXY_PING=$(ping_server ${AP_MAIN_PROXY_HOST})
 GOOGLE_PING=$(ping_server ${GOOGLE_HOST})
 GITHUB_PING=$(ping_server ${GITHUB_HOST})
 
-echo "\t$(show_ping_result $PROXY_PING 'proxy RSC')"
-echo "\t$(show_ping_result $GOOGLE_PING google.com)"
-echo "\t$(show_ping_result $GITHUB_PING github.com)"
+echo "$(show_ping_result $PROXY_PING 'intranet proxy')"
+echo "$(show_ping_result $GOOGLE_PING google.com)"
+echo "$(show_ping_result $GITHUB_PING github.com)"
 echo "---"
 
 if [ -f "$FLAG_FILE" ]
