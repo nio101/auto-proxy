@@ -89,12 +89,6 @@ AP_FTP_PROXY=$AP_MAIN_PROXY
 AP_RSYNC_PROXY=$AP_MAIN_PROXY
 AP_NO_PROXY="localhost,127.0.0.0/8,::1, .localdomain.intra"
 
-# ----------- private part
-AP_INTRANET_HOST="proxyrsc2-vdr.si.francetelecom.fr"
-AP_MAIN_PROXY_HOST="localhost"
-AP_MAIN_PROXY_PORT="3128"
-AP_MAIN_PROXY="http://$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
-
 # ================================================================
 export AP_ALL_PROXY
 export AP_HTTP_PROXY
