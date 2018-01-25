@@ -7,7 +7,7 @@
 #
 # It checks intranet/internet connectivity and set proxy accordingly, automatically
 #
-# contact: nicolas.barthe@orange.com
+# contact: nio101@outlook.com
 #
 
 # dependencies: ping, curl
