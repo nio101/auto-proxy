@@ -63,7 +63,7 @@ and adds an icon and a color to reflect internet connectivity:
 and the plugin won't be able to properly do its job.
 	* when the proxy settings have been modified by the plugin, you should source `/etc/bash.bashrc` and `~/.bashrc` to refresh any already open terminal/console on your local machine. tip: use `alias env_reload='source /etc/bash.bashrc; source ~/.bashrc'` in your `~/.bashrc`, and juste use `env_reload`.
 
-## Installation
+## Configuration & installation
 
 1. Clone or unzip the repository locally.
 2. Modify the settings at the beginning of the bash script named `autoproxy.r.30s.sh` to reflect your proxy configuration.
