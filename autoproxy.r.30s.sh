@@ -13,6 +13,12 @@
 # dependencies: ping, curl
 
 # ================================================================
+# -= UNCOMMENT THE FOLLOWING TO TEMPORARILY DISABLE THE PLUGIN =-
+
+#echo "internet 🚀| color=#1a9850 iconName=network-transmit-receive"
+#exit 0
+
+# ================================================================
 # -= MAKE YOU CUSTOM CONFIG MODIFICATIONS HERE! =-
 
 # Proxy Settings that will be used in the .autoproxy_set_proxy scripts
