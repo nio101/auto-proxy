@@ -12,62 +12,6 @@
 
 # dependencies: ping, curl
 
-# How it works:
-
-# 0. Read the config from the file .autoproxy_config.cfg
-
-# 1. Checks the presence of /tmp/autoproxy_auto/manual_on.flag or /tmp/autoproxy_auto/manual_off.flag to
-# 	 assess the current session's proxy's state: on/off/unknown
-
-# 2. Checks for connectivity by pinging the intranet proxy server.
-# 	 if OK => we're on the intranet, and proxy should be set
-#	 else, proxy should be removed.
-
-# 3. to set the proxy, it will run every executable inside the .autoproxy_set_proxy/ subdir
-#	 to unset the proxy, it will do the same with the .autoproxy_unset_proxy/ subdir
-#	 example of scripts actions: set env vars in /etc/bash.bashrc, in /etc/apt.conf, etç...
-#	 (after that, it will source /etc/bash.bashrc to refresh the updated env vars)
-
-# 4. reload the bash.bashrc env vars, and then checks for connectivity to some internet server (google.com)
-# 	 if on the intranet, we use a curl command to test at http level (via proxy)
-#	 because a ping command (TCP/IP level) wouldn't work with an http_proxy.
-#    if not on the intranet, we can use a basic ping command.
-# 		if OK => internet connectivity step 1 is confirmed (through the proxy, or not)
-#		if NOK => no internet connectivity :s
-
-# 5. a batch of checks are then run, through all the scripts in the .autoproxy_checks/ subdir
-#    their results will be shown on the menu view of the plugin
-
-# the status bar label reflects intranet/internet connectivity/status, depending on the zone (intranet or not)
-# and adds an icon and a color to reflect internet connectivity:
-# 	green + 🚀 if OK
-#   orange + ⛔ if NOK
-
-# details are provided within the menu:
-# - current proxy status (set/unset/error).
-# 	error means a set/unset script has encountered an error.
-# - proxy ping (in red if no connectivity)
-# - google ping (in red if no connectivity)
-
-# commands are provided to manually set/unset proxy, disabling the auto detection mode
-# or to enable again the auto detection mode.
-
-# note: to list usable icons with iconName:
-# - sudo apt-get install gtk-3-examples
-# - run gtk3-icon-browser in terminal
-# - names are usable with the iconName property
-
-# please note: every env variables export are set automatically in /etc/bash.bashrc
-# the script modifies and sources that script only.
-# if settings are present in ~/.bashrc, they will overwrite those settings
-# and the plugin won't be able to properly do its job
-
-# todo: virer les checks/cross après les ping times/checks
-# utiliser uniquement pour les commandes/options
-# voir comment implémenter les commandes pour auto/on/off
-# ajouter des ping sur la forge, sur devwatt, openwatt...
-# TODO: le rouge est illisible, préférer l'orange
-
 # ================================================================
 # -= MAKE YOU CUSTOM CONFIG MODIFICATIONS HERE! =-
 
@@ -75,19 +19,18 @@
 # to make changes to system's conf
 
 # this one will be used with ping to detect intranet connectivity
-AP_INTRANET_HOST="intranet_host"
-AP_MAIN_PROXY_HOST="proxy_host"
-AP_MAIN_PROXY_PORT="8080"
+AP_INTRANET_HOST="intra_host"
+AP_MAIN_PROXY_HOST="localhost"
+AP_MAIN_PROXY_PORT="3128"
 AP_MAIN_PROXY="http://$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
-# or AP_MAIN_PROXY="http://username:password@$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
 
 # those will be used in the set_proxy scripts
 AP_ALL_PROXY=$AP_MAIN_PROXY
-AP_HTTP_PROXY="$AP_MAIN_PROXY"
+AP_HTTP_PROXY=$AP_MAIN_PROXY
 AP_HTTPS_PROXY=$AP_MAIN_PROXY
 AP_FTP_PROXY=$AP_MAIN_PROXY
 AP_RSYNC_PROXY=$AP_MAIN_PROXY
-AP_NO_PROXY="localhost,127.0.0.0/8,::1, .localdomain.intra"
+AP_NO_PROXY="localhost,127.0.0.0/8,::1"
 
 # ================================================================
 export AP_ALL_PROXY
@@ -117,9 +60,6 @@ MAX_PING=1000
 GOOGLE_HOST="www.google.com"
 GITHUB_HOST="www.github.com"
 
-# -= 0. read the proxy config =- (no more)
-# source ~/.config/argos/.autoproxy_config.cfg
-
 # -= 1. any previous status for this session? =-
 STATUS="unknown"
 if [ -f /tmp/autoproxy_auto_on.flag ]; then
@@ -128,12 +68,6 @@ fi
 if [ -f /tmp/autoproxy_auto_off.flag ]; then
     STATUS="OFF"
 fi
-#if [ -f /tmp/autoproxy_manual_on.flag ]; then
-#    STATUS="manual_on"
-#fi
-#if [ -f /tmp/autoproxy_manual_off.flag ]; then
-#    STATUS="manual_off"
-#fi
 
 # -= 2. check intranet proxy connectivity =-
 function ping_server {	# and return the ping value in ms
@@ -277,7 +211,7 @@ if [ "$ZONE" == "internet" ]; then
 fi
 
 if RES=$(curl -H 'Cache-Control: no-cache' -I http://google.com 2>/dev/null); then
-	# réponse obtenue...
+	# got an answer
 	ICON="🚀"
 	COLOR="#1a9850"
 	DO_TIME_HTTP="yes"
