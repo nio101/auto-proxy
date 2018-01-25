@@ -237,7 +237,6 @@ echo "---"
 
 systemctl is-active cntlm >/dev/null 2>&1 && echo "cntlm: ON" || echo "cntlm: OFF"
 echo "proxy: $STATUS"
-echo "debug http_proxy: $http_proxy"
 echo "---"
 
 echo "$(show_ping_result $PROXY_PING 'intra_proxy')"
