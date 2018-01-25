@@ -71,6 +71,8 @@ and the plugin won't be able to properly do its job.
 4. Add/remove/modify scripts inside the `.autoproxy_set_proxy` and the `.autoproxy_unset_proxy` directories. The executables inside those directories will be run in alphabetical order when the proxy settings must be set/unset. You can write your own scripts, using the variables set at the beginning of `autoproxy.r.30s.sh`.
 5. Use `make install` to install auto-proxy to your local argo directory (`~/.config/argos/`) and make it run.
 
+* _To temporarily disable the plugin, use argos to edit the plugin script (last command in the plugin menu), and uncomment the corresponding section in the main script header._
+
 ## Problems?
 
 * To debug any problem, you can go to the argo directory `~/.config/argos/` and manually run `autoproxy.r.30s.sh`.
