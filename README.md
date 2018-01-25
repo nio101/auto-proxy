@@ -29,10 +29,11 @@ What the main bash script does for each iteration:
 	* to unset the proxy, it will do the same with the `.autoproxy_unset_proxy/` subdir
 	* example of scripts actions: set env vars in `/etc/bash.bashrc`, in `/etc/apt.conf`, etç...
 	* after each proxy setting/unsetting, the main script will source `/etc/bash.bashrc` to refresh its env vars.
-	* currents provided scripts:
-		* cntlm start/stop.
-		* `/etc/bash.bashrc` env vars.
-		* setting alias in `/etc/bash.bashrc` to run firefox with the proper profile (one for intranet, the other fot internet). 
+	* currents provided scripts will do the following:
+		* start/stop cntlm.
+		* update `/etc/bash.bashrc` env vars.
+		* update alias in `/etc/bash.bashrc` to run firefox with the proper profile (one for intranet, the other fot internet).
+	* you can remove or add any script at will to customize the usage to your needs.
 
 4. Checks for connectivity to some internet server (google.com)
 	* if on the intranet, we use a curl command to test connectivity at HTTP level (via proxy) because a ping command (TCP/IP level) wouldn't basically work with an http_proxy.
