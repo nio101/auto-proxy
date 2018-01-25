@@ -57,10 +57,10 @@ and adds an icon and a color to reflect internet connectivity:
 	- run gtk3-icon-browser in terminal and choose an icon.
 	- it's name is set in the main bash script using the iconName property.
 
-* :warning: Every env variables export are set automatically in `/etc/bash.bashrc`. The script modifies and sources that script only.
-* if settings are present in ~/.bashrc, they will overwrite those settings
+* :warning: Every env variables export are set automatically in `/etc/bash.bashrc`. The script modifies and sources that script only. So:
+	* if settings are present in ~/.bashrc, they will overwrite those settings
 and the plugin won't be able to properly do its job.
-* when the proxy settings have been modified by the plugin, you should source `/etc/bash.bashrc` and `~/.bashrc` to refresh any already open terminal/console on your local machine. tip: use `alias env_reload='source /etc/bash.bashrc; source ~/.bashrc'` in your `~/.bashrc`, and juste use `env_reload`.
+	* when the proxy settings have been modified by the plugin, you should source `/etc/bash.bashrc` and `~/.bashrc` to refresh any already open terminal/console on your local machine. tip: use `alias env_reload='source /etc/bash.bashrc; source ~/.bashrc'` in your `~/.bashrc`, and juste use `env_reload`.
 
 ## Installation
 
