@@ -2,6 +2,8 @@
 
 > Argos plugin to automatically check intranet/internet connectivity and set proxy settings accordingly.
 
+![screenshot](./screenshot.png)
+
 ## Features
 
 * detects automatically intranet connectivity by pinging a given server (an intranet/corporate proxy, for example).
@@ -32,6 +34,8 @@ What the main bash script does for each iteration:
 	* currents provided scripts will do the following:
 		* start/stop cntlm.
 		* update `/etc/bash.bashrc` env vars.
+		* update proxy in `/etc/apt/apt.conf`.
+		* update git global http.proxy variable.
 		* update alias in `/etc/bash.bashrc` to run firefox with the proper profile (one for intranet, the other fot internet).
 	* you can remove or add any script at will to customize the usage to your needs.
 
@@ -58,17 +62,18 @@ and adds an icon and a color to reflect internet connectivity:
 	- run gtk3-icon-browser in terminal and choose an icon.
 	- it's name is set in the main bash script using the iconName property.
 
-* :warning: Every env variables export are set automatically in `/etc/bash.bashrc`. The script modifies and sources that script only. So:
+* :warning: Every env variables export are set automatically in `/etc/bash.bashrc`. The script modifies and sources that script only, so:
 	* if settings are present in ~/.bashrc, they will overwrite those settings
 and the plugin won't be able to properly do its job.
-	* when the proxy settings have been modified by the plugin, you should source `/etc/bash.bashrc` and `~/.bashrc` to refresh any already open terminal/console on your local machine. tip: use `alias env_reload='source /etc/bash.bashrc; source ~/.bashrc'` in your `~/.bashrc`, and juste use `env_reload`.
+	* when the proxy settings have been modified by the plugin, **you should source `/etc/bash.bashrc` and `~/.bashrc` to refresh any already open terminal/console on your local machine**.
+		* tip: use `alias env_reload='source /etc/bash.bashrc; source ~/.bashrc'` in your `~/.bashrc`, and juste use `env_reload` update the env vars.
 
 ## Configuration & installation
 
 1. Clone or unzip the repository locally.
 2. Modify the settings at the beginning of the bash script named `autoproxy.r.30s.sh` to reflect your proxy configuration.
-3. Rename optionally this script using the proper [argos file naming syntax](https://github.com/p-e-w/argos#filename-format) to modify the plugin position and refresh frequency.
-4. Add/remove/modify scripts inside the `.autoproxy_set_proxy` and the `.autoproxy_unset_proxy` directories. The executables inside those directories will be run in alphabetical order when the proxy settings must be set/unset. You can write your own scripts, using the variables set at the beginning of `autoproxy.r.30s.sh`.
+3. **_Optional_**: Rename this script using the proper [argos file naming syntax](https://github.com/p-e-w/argos#filename-format) to modify the plugin position and refresh frequency.
+4. **_Optional_**: Add/remove/modify scripts inside the `.autoproxy_set_proxy` and the `.autoproxy_unset_proxy` directories. The executables inside those directories will be run in alphabetical order when the proxy settings must be set/unset. You can write your own scripts, using the variables set at the beginning of `autoproxy.r.30s.sh`.
 5. Use `make install` to install auto-proxy to your local argo directory (`~/.config/argos/`) and make it run.
 
 * _To temporarily disable the plugin, use argos to edit the plugin script (last command in the plugin menu), and uncomment the corresponding section in the main script header._

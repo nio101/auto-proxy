@@ -15,7 +15,7 @@
 # ================================================================
 # -= UNCOMMENT THE FOLLOWING TO TEMPORARILY DISABLE THE PLUGIN =-
 
-#echo "internet 🚀| color=#1a9850 iconName=network-transmit-receive"
+#echo "(disabled) | color=#1a9850 iconName=network-transmit-receive"
 #exit 0
 
 # ================================================================
@@ -25,7 +25,7 @@
 # to make changes to system's conf
 
 # this one will be used with ping to detect intranet connectivity
-AP_INTRANET_HOST="intra_host"
+AP_INTRANET_HOST="intranet_host_to_ping"
 AP_MAIN_PROXY_HOST="localhost"
 AP_MAIN_PROXY_PORT="3128"
 AP_MAIN_PROXY="http://$AP_MAIN_PROXY_HOST:$AP_MAIN_PROXY_PORT"
@@ -216,7 +216,7 @@ if [ "$ZONE" == "internet" ]; then
 	fi
 fi
 
-if RES=$(curl -H 'Cache-Control: no-cache' -I http://google.com 2>/dev/null); then
+if RES=$(curl --max-time 5 -H 'Cache-Control: no-cache' -I http://google.com 2>/dev/null); then
 	# got an answer
 	ICON="🚀"
 	COLOR="#1a9850"
@@ -246,9 +246,9 @@ echo "$(show_ping_result $GITHUB_PING github.com)"
 echo "---"
 if [ "$DO_TIME_HTTP" == "yes" ]; then
 	echo "---"
-	GOOGLE_HTTP_TIME=$({ /usr/bin/time -f "%e" curl -H 'Cache-Control: no-cache' -sI google.com|tail -n 1| tr -d '\n' >/dev/null 2>&1;} 2>&1 )
+	GOOGLE_HTTP_TIME=$({ /usr/bin/time -f "%e" curl --max-time 5 -H 'Cache-Control: no-cache' -sI google.com|tail -n 1| tr -d '\n' >/dev/null 2>&1;} 2>&1 )
 	echo "http google.com: $GOOGLE_HTTP_TIME sec| color=#1a9850 $FONT"
-	GITHUB_HTTP_TIME=$({ /usr/bin/time -f "%e" curl -H 'Cache-Control: no-cache' -sI github.com|tail -n 1| tr -d '\n' >/dev/null 2>&1;} 2>&1 )	
+	GITHUB_HTTP_TIME=$({ /usr/bin/time -f "%e" curl --max-time 5 -H 'Cache-Control: no-cache' -sI github.com|tail -n 1| tr -d '\n' >/dev/null 2>&1;} 2>&1 )	
 	echo "http github.com: $GITHUB_HTTP_TIME sec| color=#1a9850 $FONT"
 else
 	echo "http google.com: ❌| color=#fc8d59 $FONT"
